@@ -5,26 +5,29 @@ The **Simple Responsive Tables** Plugin is for [Grav CMS](http://github.com/getg
 
 It wraps `<table>` HTML outputs:
 
-  <table>
-    <tr>
-      <td>Cell 1</td>
-      <td>Cell 2</td>
-    </tr>
-  </table>
+```
+<table>
+	<tr>
+	  <td>Cell 1</td>
+	  <td>Cell 2</td>
+	</tr>
+</table>
+```
 
 with two `<div>` elements, like this:
 
-  <div class="simple-responsive-table">
-    <div>
-      <table>
-        <tr>
-          <td>Cell 1</td>
-          <td>Cell 2</td>
-        </tr>
-      </table>
-    </div>
-  </div>
-
+```
+<div class="simple-responsive-table">
+	<div>
+	  <table>
+	    <tr>
+	      <td>Cell 1</td>
+	      <td>Cell 2</td>
+	    </tr>
+	  </table>
+	</div>
+</div>
+```
 It also provides basic styling to indicate that the table can be scrolled.
 This functionality requires JavaScript to be enabled. Otherwise the tables are still scrollable, but it is not visually indicated.
 
@@ -66,5 +69,6 @@ You just need to install and enable the plugin and it does it's work!
 
 ## Credits
 The plugin is inspired and based on the following works:
- * the article about [responsive scrollable tables](http://www.456bereastreet.com/archive/201309/responsive_scrollable_tables/) by Roger Johansson
- * the [ImgCaptions](https://github.com/OleVik/grav-plugin-imgcaptions) plugin by Ole Vik.
+
+- the article about [responsive scrollable tables](http://www.456bereastreet.com/archive/201309/responsive_scrollable_tables/) by Roger Johansson
+- the [ImgCaptions](https://github.com/OleVik/grav-plugin-imgcaptions) plugin by Ole Vik.

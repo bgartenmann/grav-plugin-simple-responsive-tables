@@ -1,5 +1,5 @@
 name: Simple Responsive Tables
-version: 1.0.0
+version: 1.0.1
 description: Wraps tables in a div, enabling them to be scrolled vertically on small screens.
 icon: table
 author:
