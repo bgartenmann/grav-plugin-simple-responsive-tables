@@ -10,6 +10,7 @@ use RocketTheme\Toolbox\Event\Event;
  */
 class SimpleResponsiveTablesPlugin extends Plugin
 {
+
   /**
    * @return array
    *
@@ -39,39 +40,56 @@ class SimpleResponsiveTablesPlugin extends Plugin
 
     // Enable the main event we are interested in
     $this->enable([
-        'onPageContentProcessed' => ['onPageContentProcessed', 0],
         'onPageInitialized' => ['onPageInitialized', 0]
     ]);
   }
 
+  public function onPageInitialized()
+    {
+        if ($this->isAdmin()) {
+            return;
+        }
+
+        /** @var Page $page */
+        $page = $this->grav['page'];
+
+        $config = $this->mergeConfig($page);
+        $active = $config->get('active', $config->get('process'));
+
+        if ($active) {
+            $this->enable([
+                'onPageContentProcessed' => ['onPageContentProcessed', 0],
+                'onTwigSiteVariables' => ['onTwigSiteVariables', 0]
+            ]);
+        }
+    }
+
   /**
-   * Finds tables in page content and wraps with div
+   * Find tables in page content and wrap it with two divs
    * @return void
    */
   public function onPageContentProcessed(Event $event)
   {
-    $page = $event['page'];
-    $buffer = $page->content();
-    $url = $page->url();
+    /** @var Page $page */
+    $page = $this->grav['page'];
+
+    $raw_content = $page->content();
 
     // add opening div tag with corresponding class for styling
-    $buffer = preg_replace("/<table[^>]*>/", "<div class='simple-responsive-table'><div>$0", $buffer);
+    $raw_content = preg_replace("/<table[^>]*>/", "<div class='simple-responsive-table'><div>$0", $raw_content);
     // add closing div tag after table
-    $buffer = preg_replace("/<\/table>/", "$0</div></div>", $buffer);
+    $raw_content = preg_replace("/<\/table>/", "$0</div></div>", $raw_content);
 
-    $page->setRawContent($buffer);
+    $page->setRawContent($raw_content);
   }
 
+
   /**
-   * Add assets
-   *
-   */
-  public function onPageInitialized()
+  * Set needed variables to make the responsive tables work.
+  */
+  public function onTwigSiteVariables()
   {
-    $assets = $this->grav['assets'];
-    // Add custom styles
-    $assets->addCss('plugin://simple-responsive-tables/assets/css/simple-responsive-tables.css', 110);
-    // Add custom javascript
-    $assets->addJs('plugin://simple-responsive-tables/assets/js/simple-responsive-tables.js', 110);
+    $this->grav['assets']->add('plugin://simple-responsive-tables/assets/css/simple-responsive-tables.css');
+    $this->grav['assets']->add('plugin://simple-responsive-tables/assets/js/simple-responsive-tables.js');
   }
 }
