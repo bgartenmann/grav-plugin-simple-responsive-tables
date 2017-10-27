@@ -24,3 +24,13 @@ form:
         0: Disabled
       validate:
         type: bool
+    active:
+      type: toggle
+      label: Plugin active
+      highlight: 1
+      default: 0
+      options:
+        1: Yes
+        0: No
+      validate:
+        type: bool
