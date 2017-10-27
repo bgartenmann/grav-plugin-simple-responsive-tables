@@ -60,12 +60,22 @@ Before configuring this plugin, you should copy the `user/plugins/simple-respons
 Here is the default configuration and an explanation of available options:
 
 ```yaml
-enabled: true
+enabled: true                # Set to false to disable this plugin completely
+active: false                # Option to (de-)activate this plugin on a page
 ```
 
 ## Usage
 
-You just need to install and enable the plugin and it does it's work!
+After installing and enabling the plugin, it is deactivated by default.
+You now can activate it on a page per page basis by setting the `active`config to `true` in the frontmatter:
+
+```yaml
+simple-responsive-tables:
+    active: true
+```
+
+If you do have a lot of pages with tables you can enable the plugin for the entire site, by setting the `active` flag to `true` in `user/config/plugins/simple-responsive-tables.yaml`.  
+It is also possible to deactivate the functionality on certain pages, by setting the config to `false` again in the frontmatter.
 
 ## Credits
 The plugin is inspired and based on the following works:
