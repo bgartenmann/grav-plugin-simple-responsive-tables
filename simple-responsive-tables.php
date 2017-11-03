@@ -1,6 +1,7 @@
 <?php
 namespace Grav\Plugin;
 
+use Grav\Common\Page\Page;
 use Grav\Common\Plugin;
 use RocketTheme\Toolbox\Event\Event;
 
@@ -40,38 +41,29 @@ class SimpleResponsiveTablesPlugin extends Plugin
 
     // Enable the main event we are interested in
     $this->enable([
-        'onPageInitialized' => ['onPageInitialized', 0]
+        'onPageContentProcessed' => ['onPageContentProcessed', 0],
+        'onTwigSiteVariables' => ['onTwigSiteVariables', 0]
     ]);
   }
 
-  public function onPageInitialized()
-    {
-        if ($this->isAdmin()) {
-            return;
-        }
-
-        /** @var Page $page */
-        $page = $this->grav['page'];
-
-        $config = $this->mergeConfig($page);
-        $active = $config->get('active', $config->get('process'));
-
-        if ($active) {
-            $this->enable([
-                'onPageContentProcessed' => ['onPageContentProcessed', 0],
-                'onTwigSiteVariables' => ['onTwigSiteVariables', 0]
-            ]);
-        }
-    }
-
   /**
+   * Process shortcodes after Grav's processing, but before caching
    * Find tables in page content and wrap it with two divs
+   * @param Event $event
    * @return void
    */
   public function onPageContentProcessed(Event $event)
   {
     /** @var Page $page */
-    $page = $this->grav['page'];
+    $page = $event['page'];
+    $config = $this->mergeConfig($page);
+
+    $this->active = $config->get('active', $config->get('process'));
+
+    // if the plugin is not active (either global or on page) exit
+    if (!$this->active) {
+        return;
+    }
 
     $raw_content = $page->content();
 
@@ -89,7 +81,9 @@ class SimpleResponsiveTablesPlugin extends Plugin
   */
   public function onTwigSiteVariables()
   {
-    $this->grav['assets']->add('plugin://simple-responsive-tables/assets/css/simple-responsive-tables.css');
-    $this->grav['assets']->add('plugin://simple-responsive-tables/assets/js/simple-responsive-tables.js');
+    if($this->active) {
+      $this->grav['assets']->add('plugin://simple-responsive-tables/assets/css/simple-responsive-tables.css');
+      $this->grav['assets']->add('plugin://simple-responsive-tables/assets/js/simple-responsive-tables.js');
+    }
   }
 }
