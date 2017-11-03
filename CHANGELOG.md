@@ -1,3 +1,12 @@
+# v1.1.1
+##  11/03/2017
+
+1. [](#bugfix)
+    * enable `onPageContentProcessed` and `onTwigSiteVariables` directly in `onPluginsInitialized`. Otherwise it would not work, if another plugin uses the same hooks (like grav-plugin-shortcode-core).
+2. [](#improved)
+    * only include css and js files, if the plugin is active on current page
+
+
 # v1.1.0
 ##  10/27/2017
 
